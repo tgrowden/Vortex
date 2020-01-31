@@ -20,6 +20,10 @@
 
 #define totalModes 14
 #define totalPatterns 21
+#define demoDuration 12000 // duration of each pattern in
+
+unsigned long demoClock = 0;
+bool demoModeActive = true;
 
 //Objects
 //---------------------------------------------------------
@@ -110,15 +114,48 @@ void setup() {
 
 void loop() {
   menu = mode[m].menuNum;
-  if (menu == 0) playMode();
-  if (menu == 1) openColors();
-  if (menu == 2) colorSet();
-  if (menu == 3) openPatterns();
-  if (menu == 4) patternSelect();
-  if (menu == 5) confirmBlink();
-  if (menu == 6) randomizerRoll();
-  if (menu == 7) shareMode();
-  if (menu == 8) receiveMode();
+  switch (menu) {
+    case 0: {
+      if (demoModeActive) {
+        demoMode();
+      } else {
+        playMode();
+      }
+      break;
+    }
+    case 1: {
+      openColors();
+      break;
+    }
+    case 2: {
+      colorSet();
+      break;
+    }
+    case 3: {
+      openPatterns();
+      break;
+    }
+    case 4: {
+      patternSelect();
+      break;
+    }
+    case 5: {
+      confirmBlink();
+      break;
+    }
+    case 6: {
+      randomizerRoll();
+      break;
+    }
+    case 7: {
+      shareMode();
+      break;
+    }
+    case 8: {
+      receiveMode();
+      break;
+    }
+  }
   checkButton();
   checkSerial();
   FastLED.show();
@@ -131,6 +168,15 @@ void playMode() {
   mainClock = millis();
   patterns(mode[m].patternNum);
   catchMode();
+}
+
+void demoMode() {
+  if (millis() >= demoClock + demoDuration) {
+      demoClock += demoDuration;
+
+      m = m + 1 < totalModes ? m + 1 : 0;
+    }
+    playMode();
 }
 
 //Patterns
@@ -1003,6 +1049,30 @@ void randomizerRoll() {
   }
 }
 
+void useNextMode() {
+  if (demoModeActive) {
+    demoModeActive = false;
+    m = 0;
+  } else {
+    m++;
+  }
+  frame = 0;
+  gap = 0;
+  resetColors();
+}
+
+void usePreviousMode() {
+  if (demoModeActive) {
+    demoModeActive = false;
+    m = 0;
+  } else {
+    m--;
+  }
+  frame = 0;
+  gap = 0;
+  resetColors();
+}
+
 //Buttons
 //---------------------------------------------------------
 
@@ -1028,7 +1098,7 @@ void checkButton() {
       if (button[b].buttonState == HIGH && button[b].lastButtonState == LOW && millis() - button[b].prevPressTime > 200) {
         if (button[b].holdTime < 300) {
           if (b == 0) {
-            if (menu == 0)m++, frame = 0, gap = 0, resetColors();//, throwMode();
+            if (menu == 0) useNextMode();
             if (menu == 2) {
               if (stage == 0) targetSlot++; //next option
               if (stage == 1) targetZone++;
@@ -1039,7 +1109,7 @@ void checkButton() {
             if (menu == 4)patNum++, frame = 0, resetColors();
           }
           if (b == 1) {
-            if (menu == 0)m--, frame = 0; gap = 0, resetColors();
+            if (menu == 0) usePreviousMode();
             if (menu == 2) {
               if (stage == 0) targetSlot--; //previous option
               if (stage == 1) targetZone--;
@@ -1658,4 +1728,3 @@ void setDefaults() {
   mode[13].sat[3] = 255;
   mode[13].val[3] = 255;
 }
-
