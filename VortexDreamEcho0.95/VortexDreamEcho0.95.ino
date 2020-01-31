@@ -1049,24 +1049,14 @@ void randomizerRoll() {
   }
 }
 
-void useNextMode() {
+void progressModes(int i) {
   if (demoModeActive) {
     demoModeActive = false;
-    m = 0;
   } else {
-    m++;
+    m += i;
   }
-  frame = 0;
-  gap = 0;
-  resetColors();
-}
-
-void usePreviousMode() {
-  if (demoModeActive) {
-    demoModeActive = false;
+  if (m > totalModes || m < 0) {
     m = 0;
-  } else {
-    m--;
   }
   frame = 0;
   gap = 0;
@@ -1098,7 +1088,7 @@ void checkButton() {
       if (button[b].buttonState == HIGH && button[b].lastButtonState == LOW && millis() - button[b].prevPressTime > 200) {
         if (button[b].holdTime < 300) {
           if (b == 0) {
-            if (menu == 0) useNextMode();
+            if (menu == 0) progressModes(1);
             if (menu == 2) {
               if (stage == 0) targetSlot++; //next option
               if (stage == 1) targetZone++;
@@ -1109,7 +1099,7 @@ void checkButton() {
             if (menu == 4)patNum++, frame = 0, resetColors();
           }
           if (b == 1) {
-            if (menu == 0) usePreviousMode();
+            if (menu == 0) progressModes(-1);
             if (menu == 2) {
               if (stage == 0) targetSlot--; //previous option
               if (stage == 1) targetZone--;
