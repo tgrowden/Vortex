@@ -1520,6 +1520,92 @@ void importData() {
   }
 }
 
+Modes getRandomMode() {
+  int type = random(0, 10);
+
+  Modes newMode; // a new mode to be returned
+
+  switch (type) {
+    // true random
+    case 0: {
+      newMode.numColors = random(1, 8);
+
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.hue[i] = random(0, 16) * 16;
+        newMode.sat[i] = random(0, 4) * 85;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // monochrome
+    case 1: {
+      newMode.numColors = 4;
+
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.hue[i] = random(0, 16) * 16;;
+        newMode.sat[i] = r * 85;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // complimentary
+    case 2: {
+      newMode.numColors = 2;
+
+      int tempHue = random(0, 16) * 16;
+      int compHue = tempHue + 128;
+
+      if (compHue >= 255) {
+        compHue -= 256;
+      }
+      newMode.hue[0] = tempHue;
+      newMode.hue[1] = compHue;
+
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // analogous
+    case 3: {
+      newMode.numColors = 3;
+      int tempHue = random(0, 16) * 16;
+
+      int analHue1 = tempHue - 16; // hah. "anal"
+      if (analHue1 < 0) {
+        analHue1 += 256;
+      }
+
+      int analHue2 = tempHue + 16;
+      if (analHue2 > 255) {
+        analHue2 -= 256;
+      }
+
+      newMode.hue[0] = tempHue;
+      newMode.hue[1] = analHue1;
+      newMode.hue[2] = analHue2;
+
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    case 4: {
+      // @TODO: continue here
+    }
+  }
+}
+
 //Default Modes
 //---------------------------------------------------------
 
