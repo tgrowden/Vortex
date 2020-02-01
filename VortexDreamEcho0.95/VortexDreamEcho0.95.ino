@@ -18,9 +18,9 @@
 #define DATA_PIN 4
 #define CLOCK_PIN 3
 
-#define totalModes 14
+#define totalModes 20
 #define totalPatterns 21
-#define demoDuration 12000 // duration of each pattern in
+#define demoDuration 12000 // duration of each pattern in demo mode
 
 unsigned long demoClock = 0;
 bool demoModeActive = true;
