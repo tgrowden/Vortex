@@ -862,167 +862,6 @@ void confirmBlink() {
 // Randomizer
 //---------------------------------------------------------
 
-void rollColors() {
-  rollPattern();
-  int type = random(0, 10);
-  //true random, monochrome, complimentary, analogous, triadic, split complimentary, tetradic
-  if (type == 0) { // true random
-    mode[m].numColors = random(1, 8);
-    for (int r = 0; r < 8; r ++) {
-      mode[m].hue[r] = random(0, 16) * 16;
-      mode[m].sat[r] = random(0, 4) * 85;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 1) { // monochrome
-    mode[m].numColors = 4;
-    int tempHue = random(0, 16) * 16;
-    for (int r = 0; r < 4; r++) {
-      mode[m].hue[r] = tempHue;
-      mode[m].sat[r] = r * 85;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 2) { // complimentary
-    mode[m].numColors = 2;
-    int tempHue = random(0, 16) * 16;
-    int compHue = tempHue + 128;
-    if (compHue >= 255) compHue -= 256;
-    mode[m].hue[0] = tempHue;
-    mode[m].hue[1] = compHue;
-    for (int r = 0; r < 2; r++) {
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 3) { // analogous
-    mode[m].numColors = 3;
-    int tempHue = random(0, 16) * 16;
-    int analHue1 = tempHue - 16;
-    if (analHue1 < 0) analHue1 += 256;
-    int analHue2 = tempHue + 16;
-    if (analHue2 > 255) analHue2 -= 256;
-    mode[m].hue[0] = tempHue;
-    mode[m].hue[1] = analHue1;
-    mode[m].hue[2] = analHue2;
-    for (int r = 0; r < 3; r++) {
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 4) { // triadic
-    mode[m].numColors = 3;
-    int tempHue = random(0, 16) * 16;
-    int triadHue1 = tempHue + 80;
-    int triadHue2 = tempHue - 80;
-    if (triadHue1 > 255) triadHue1 -= 256;
-    if (triadHue2 < 0) triadHue2 += 256;
-    mode[m].hue[0] = tempHue;
-    mode[m].hue[1] = triadHue1;
-    mode[m].hue[2] = triadHue2;
-    for (int r = 0; r < 3; r++) {
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 5) { // split complimentary
-    mode[m].numColors = 3;
-    int tempHue = random(0, 16) * 16;
-    int splitCompHue1 = tempHue + 112;
-    int splitCompHue2 = tempHue - 112;
-    if (splitCompHue1 > 255) splitCompHue1 += 256;
-    if (splitCompHue2 < 0) splitCompHue2 += 256;
-    mode[m].hue[0] = tempHue;
-    mode[m].hue[1] = splitCompHue1;
-    mode[m].hue[2] = splitCompHue2;
-    for (int r = 0; r < 3; r++) {
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 6) { // tetradic
-    mode[m].numColors = 4;
-    int tempHue = random(0, 16) * 16;
-    int tetradHue1 = tempHue + 48;
-    int tetradHue2 = tempHue + 128;
-    int tetradHue3 = tempHue + 208;
-    if (tetradHue1 > 255) tetradHue1 -= 256;
-    if (tetradHue2 > 255) tetradHue2 -= 256;
-    if (tetradHue3 > 255) tetradHue3 -= 256;
-    mode[m].hue[0] = tempHue;
-    mode[m].hue[1] = tetradHue1;
-    mode[m].hue[2] = tetradHue2;
-    mode[m].hue[3] = tetradHue3;
-    for (int r = 0; r < 4; r++) {
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 7) { // square
-    mode[m].numColors = 4;
-    int tempHue = random(0, 16) * 16;
-    int tetradHue1 = tempHue + 64;
-    int tetradHue2 = tempHue + 128;
-    int tetradHue3 = tempHue + 192;
-    if (tetradHue1 > 255) tetradHue1 -= 256;
-    if (tetradHue2 > 255) tetradHue2 -= 256;
-    if (tetradHue3 > 255) tetradHue2 -= 256;
-    for (int r = 0; r < 4; r++) {
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 8) { // full rainbow
-    mode[m].numColors = 8;
-    for (int r = 0; r < 8; r++) {
-      mode[m].hue[r] = r * 32;
-      mode[m].sat[r] = 255;
-      mode[m].val[r] = random(1, 4) * 85;
-    }
-  }
-  if (type == 9) { // Solid
-    mode[m].numColors = 1;
-    mode[m].hue[0] = random(0, 16) * 16;
-    mode[m].sat[0] = random(0, 4) * 85;
-    mode[m].val[0] = random(1, 4) * 85;
-  }
-
-  int blank = random(0, 3); // randomly chooses to add blanks to colorset
-  if (blank == 0) {
-    if (mode[m].patternNum == 1 || mode[m].patternNum == 2 || mode[m].patternNum == 8 || mode[m].patternNum == 13 || mode[m].patternNum == 16) {
-      if (mode[m].numColors < 8) { // Blank at beginning
-        mode[m].hue[mode[m].numColors] = mode[m].hue[0];
-        mode[m].sat[mode[m].numColors] = mode[m].sat[0];
-        mode[m].val[mode[m].numColors] = mode[m].val[0];
-        mode[m].numColors += 1;
-        mode[m].val[0] = 0;
-      }
-      else mode[m].val[0] = random(1, 3) * 85;
-    }
-    bool blankType = random (0, 3);
-    if (mode[m].numColors < 8) {
-      if (blankType == 0) { // Blank at end
-        mode[m].val[mode[m].numColors] = 0;
-        mode[m].numColors += 1;
-      }
-      if (mode[m].numColors >= 1 && mode[m].numColors < 7) {
-        if (blankType == 1) { // 2 blanks
-          int mid = mode[m].numColors / 2;
-          mode[m].hue[mode[m].numColors] = mode[m].hue[mid];
-          mode[m].sat[mode[m].numColors] = mode[m].sat[mid];
-          mode[m].val[mode[m].numColors] = mode[m].val[mid];
-          mode[m].val[mid] = 0;
-          mode[m].val[mode[m].numColors + 1] = 0;
-          mode[m].numColors += 2;
-        }
-      }
-    }
-  }
-}
-
-void rollPattern() {
-  mode[m].patternNum = random(0, totalPatterns);
-}
 
 void randomizerRoll() {
   clearAll();
@@ -1055,8 +894,10 @@ void progressModes(int i) {
   } else {
     m += i;
   }
-  if (m > totalModes || m < 0) {
+  if (m > totalModes) {
     m = 0;
+  } else if (m < 0) {
+    m = totalModes - 1;
   }
   frame = 0;
   gap = 0;
@@ -1115,7 +956,12 @@ void checkButton() {
           //medium press
           if (b == 0) {
             if (button[b].holdTime > 800 &&  button[b].holdTime <= 2000) {
-              if (menu == 6) rollColors(), saveAll(), frame = 0, mode[m].menuNum = 5;
+              if (menu == 6) {
+                mode[m] = getRandomMode();
+                saveAll();
+                frame = 0;
+                mode[m].menuNum = 5;
+              }
             }
             if (menu == 2) {
               if (stage == 0) {
@@ -1525,6 +1371,8 @@ Modes getRandomMode() {
 
   Modes newMode; // a new mode to be returned
 
+  newMode.patternNum = random(0, totalPatterns);
+
   switch (type) {
     // true random
     case 0: {
@@ -1545,7 +1393,7 @@ Modes getRandomMode() {
 
       for (int i = 0; i < newMode.numColors; i++) {
         newMode.hue[i] = random(0, 16) * 16;;
-        newMode.sat[i] = r * 85;
+        newMode.sat[i] = i * 85;
         newMode.val[i] = random(1, 4) * 85;
       }
 
@@ -1600,10 +1448,146 @@ Modes getRandomMode() {
       break;
     }
 
+    // triadic
     case 4: {
-      // @TODO: continue here
+      newMode.numColors = 3;
+      int tempHue = random(0, 16) * 16;
+      int triadHue1 = tempHue + 80;
+      int triadHue2 = tempHue - 80;
+      if (triadHue1 > 255) {
+        triadHue1 -= 256;
+      }
+      if (triadHue2 < 0) {
+        triadHue2 += 256;
+      }
+      newMode.hue[0] = tempHue;
+      newMode.hue[1] = triadHue1;
+      newMode.hue[2] = triadHue2;
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // split complimentary
+    case 5: {
+      newMode.numColors = 3;
+      int tempHue = random(0, 16) * 16;
+      int splitCompHue1 = tempHue + 112;
+      int splitCompHue2 = tempHue - 112;
+      if (splitCompHue1 > 255) splitCompHue1 += 256;
+      if (splitCompHue2 < 0) splitCompHue2 += 256;
+      newMode.hue[0] = tempHue;
+      newMode.hue[1] = splitCompHue1;
+      newMode.hue[2] = splitCompHue2;
+
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // tetradic
+    case 6: {
+      newMode.numColors = 4;
+      int tempHue = random(0, 16) * 16;
+      int tetradHue1 = tempHue + 48;
+      int tetradHue2 = tempHue + 128;
+      int tetradHue3 = tempHue + 208;
+      if (tetradHue1 > 255) tetradHue1 -= 256;
+      if (tetradHue2 > 255) tetradHue2 -= 256;
+      if (tetradHue3 > 255) tetradHue3 -= 256;
+      newMode.hue[0] = tempHue;
+      newMode.hue[1] = tetradHue1;
+      newMode.hue[2] = tetradHue2;
+      newMode.hue[3] = tetradHue3;
+
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // square
+    case 7: {
+      newMode.numColors = 4;
+      int tempHue = random(0, 16) * 16;
+      int tetradHue1 = tempHue + 64;
+      int tetradHue2 = tempHue + 128;
+      int tetradHue3 = tempHue + 192;
+      if (tetradHue1 > 255) tetradHue1 -= 256;
+      if (tetradHue2 > 255) tetradHue2 -= 256;
+      if (tetradHue3 > 255) tetradHue2 -= 256;
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // full rainbow
+    case 8: {
+      newMode.numColors = 8;
+      for (int i = 0; i < newMode.numColors; i++) {
+        newMode.hue[i] = i * 32;
+        newMode.sat[i] = 255;
+        newMode.val[i] = random(1, 4) * 85;
+      }
+
+      break;
+    }
+
+    // Solid
+    case 9: {
+      newMode.numColors = 1;
+      newMode.hue[0] = random(0, 16) * 16;
+      newMode.sat[0] = random(0, 4) * 85;
+      newMode.val[0] = random(1, 4) * 85;
+    }
+
+    break;
+  }
+
+  int blank = random(0, 3); // randomly chooses to add blanks to colorset
+  if (blank == 0) {
+    if (newMode.patternNum == 1 || newMode.patternNum == 2 || newMode.patternNum == 8 || newMode.patternNum == 13 || newMode.patternNum == 16) {
+      if (newMode.numColors < 8) { // Blank at beginning
+        newMode.hue[newMode.numColors] = newMode.hue[0];
+        newMode.sat[newMode.numColors] = newMode.sat[0];
+        newMode.val[newMode.numColors] = newMode.val[0];
+        newMode.numColors += 1;
+        newMode.val[0] = 0;
+      }
+      else newMode.val[0] = random(1, 3) * 85;
+    }
+    bool blankType = random (0, 3);
+    if (newMode.numColors < 8) {
+      if (blankType == 0) { // Blank at end
+        newMode.val[newMode.numColors] = 0;
+        newMode.numColors += 1;
+      }
+      if (newMode.numColors >= 1 && newMode.numColors < 7) {
+        if (blankType == 1) { // 2 blanks
+          int mid = newMode.numColors / 2;
+          newMode.hue[newMode.numColors] = newMode.hue[mid];
+          newMode.sat[newMode.numColors] = newMode.sat[mid];
+          newMode.val[newMode.numColors] = newMode.val[mid];
+          newMode.val[mid] = 0;
+          newMode.val[newMode.numColors + 1] = 0;
+          newMode.numColors += 2;
+        }
+      }
     }
   }
+
+  return newMode;
 }
 
 //Default Modes
